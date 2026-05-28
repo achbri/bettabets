@@ -1,0 +1,106 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Space+Grotesk:wght@300..700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Space Grotesk", sans-serif;
+  
+  --color-primary: #0099ff;
+  --color-primary-600: #0077cc;
+  --color-primary-glow: rgba(0, 153, 255, 0.4);
+  --color-dark-bg: #000814;
+  --color-dark-card: rgba(0, 26, 61, 0.6);
+  --color-accent-lime: #b6ff00;
+  
+  --radius-4xl: 2rem;
+  --radius-5xl: 3rem;
+}
+
+@layer base {
+  :root {
+    --primary: 0 153 255;
+    --accent: 182 255 0;
+  }
+
+  body {
+    @apply antialiased selection:bg-primary selection:text-black font-sans;
+    background-color: var(--color-dark-bg);
+    color: white;
+  }
+}
+
+@layer components {
+  .glass {
+    @apply bg-white/5 backdrop-blur-xl border border-white/10 rounded-4xl;
+  }
+  
+  .glass-light {
+    @apply bg-black/5 backdrop-blur-xl border border-black/10 rounded-4xl;
+  }
+
+  .vip-glow-card {
+    @apply relative overflow-hidden;
+  }
+
+  .vip-glow-card::before {
+    content: '';
+    @apply absolute -inset-[1px] bg-gradient-to-r from-primary/50 via-primary/10 to-primary/50 rounded-[inherit] -z-10 opacity-30;
+  }
+
+  .text-glow {
+    text-shadow: 0 0 20px rgba(0, 153, 255, 0.4);
+  }
+
+  .text-accent-glow {
+    text-shadow: 0 0 15px rgba(182, 255, 0, 0.5);
+  }
+
+  .btn-primary {
+    @apply bg-primary text-white px-8 py-4 rounded-2xl font-black uppercase italic tracking-tight hover:scale-[1.02] active:scale-[0.98] transition-all shadow-[0_10px_30px_rgba(0,153,255,0.3)] hover:shadow-[0_15px_40px_rgba(0,153,255,0.4)];
+  }
+
+  .technical-label {
+    @apply text-[9px] font-black uppercase tracking-[0.3em] opacity-40;
+  }
+
+  .text-silver {
+    @apply bg-gradient-to-b from-white via-gray-300 to-gray-500 bg-clip-text text-transparent;
+  }
+  
+  .border-silver {
+    @apply border-white/20 hover:border-white/40;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #1a1a1a;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #0099ff;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes scan-line {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+}
+
+.animate-scan {
+  animation: scan-line 8s linear infinite;
+}
