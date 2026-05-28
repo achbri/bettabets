@@ -95,35 +95,35 @@ const AppLayout: React.FC = () => {
       <nav className="sticky top-0 z-50 bg-dark-bg/80 backdrop-blur-2xl border-b border-white/5 h-20 flex items-center">
         <div className="max-w-7xl mx-auto px-6 w-full flex justify-between items-center">
           <Link to="/" className="flex items-center space-x-4 group relative">
-            <BrandIcon className="w-16 h-16" />
+            <BrandIcon className="w-10 h-10" />
             <div className="flex flex-col">
-              <span className="text-2xl font-black tracking-tighter uppercase italic leading-none text-silver">
-                Betta<span className="text-primary text-glow">Bets</span>
+              <span className="text-xl font-bold tracking-tight leading-none text-white">
+                Betta<span className="text-primary">Bets</span>
               </span>
-              <span className="technical-label mt-1">Soccer Betting Channel</span>
+              <span className="text-[10px] text-gray-500 font-medium mt-1">Soccer Analytics Platform</span>
             </div>
           </Link>
 
-          <div className="hidden md:flex items-center space-x-10">
-            <Link to="/" className="technical-label hover:text-primary hover:opacity-100 transition-all">Home</Link>
-            <Link to="/history" className="technical-label hover:text-primary hover:opacity-100 transition-all">History</Link>
+          <div className="hidden md:flex items-center space-x-8">
+            <Link to="/" className="text-sm font-semibold text-gray-300 hover:text-white transition-all">Home</Link>
+            <Link to="/history" className="text-sm font-semibold text-gray-300 hover:text-white transition-all">History</Link>
             {user ? (
-              <div className="flex items-center space-x-4 ml-4 pl-4 border-l border-white/10">
-                <Link to="/dashboard" className="flex items-center gap-3 bg-white/5 hover:bg-white/10 px-5 py-2.5 rounded-2xl transition-all group border border-white/5 hover:border-primary/30">
-                  <LayoutDashboard className="w-4 h-4 text-gray-400 group-hover:text-primary" />
-                  <span className="text-xs font-black uppercase tracking-tight max-w-[100px] truncate">{user.username}</span>
+              <div className="flex items-center space-x-4 ml-2 pl-4 border-l border-white/10">
+                <Link to="/dashboard" className="flex items-center gap-2 bg-white/5 hover:bg-white/10 px-4 py-2 rounded-lg transition-all border border-white/10">
+                  <LayoutDashboard className="w-4 h-4 text-gray-400" />
+                  <span className="text-sm font-semibold">{user.username}</span>
                 </Link>
                 {user.role === UserRole.ADMIN && (
-                   <Link to="/admin" className="technical-label text-primary opacity-100">Admin Panel</Link>
+                   <Link to="/admin" className="text-sm font-semibold text-primary">Admin</Link>
                 )}
-                <button onClick={signOut} className="text-red-500 p-2.5 hover:bg-red-500/10 rounded-xl transition-colors">
+                <button onClick={signOut} className="text-gray-400 hover:text-red-500 p-2 transition-colors">
                   <LogOut className="w-4 h-4" />
                 </button>
               </div>
             ) : (
               <div className="flex items-center space-x-6">
-                <Link to="/login" className="technical-label hover:text-primary hover:opacity-100 transition-all">Sign In</Link>
-                <Link to="/register" className="btn-primary py-3 px-6 !text-[10px] !rounded-xl">Get VIP Access</Link>
+                <Link to="/login" className="text-sm font-semibold text-gray-300 hover:text-white transition-all">Sign In</Link>
+                <Link to="/register" className="btn-primary py-2 px-5 text-sm">Get Premium</Link>
               </div>
             )}
           </div>
@@ -133,26 +133,26 @@ const AppLayout: React.FC = () => {
           </button>
         </div>
 
-        <AnimatePresence>
+            <AnimatePresence>
           {isMenuOpen && (
             <motion.div 
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              className="fixed inset-x-0 top-20 bg-dark-bg/95 backdrop-blur-3xl border-b border-white/5 p-8 flex flex-col space-y-10 z-40 md:hidden h-[calc(100vh-5rem)]"
+              className="fixed inset-x-0 top-20 bg-dark-bg/95 backdrop-blur-3xl border-b border-white/5 p-8 flex flex-col space-y-6 z-40 md:hidden h-[calc(100vh-5rem)]"
             >
-              <Link to="/" className="text-5xl font-black italic uppercase tracking-tighter hover:text-primary transition-colors" onClick={() => setIsMenuOpen(false)}>Home</Link>
-              <Link to="/history" className="text-5xl font-black italic uppercase tracking-tighter hover:text-primary transition-colors" onClick={() => setIsMenuOpen(false)}>History</Link>
+              <Link to="/" className="text-2xl font-bold hover:text-primary transition-colors" onClick={() => setIsMenuOpen(false)}>Home</Link>
+              <Link to="/history" className="text-2xl font-bold hover:text-primary transition-colors" onClick={() => setIsMenuOpen(false)}>History</Link>
               {user ? (
                 <>
-                  <Link to="/dashboard" className="text-5xl font-black italic uppercase tracking-tighter hover:text-primary transition-colors" onClick={() => setIsMenuOpen(false)}>Dashboard</Link>
-                  {user.role === UserRole.ADMIN && <Link to="/admin" className="text-5xl font-black italic uppercase tracking-tighter text-primary" onClick={() => setIsMenuOpen(false)}>Admin Panel</Link>}
-                  <button onClick={signOut} className="text-left text-5xl font-black italic uppercase tracking-tighter text-red-500">Log Out</button>
+                  <Link to="/dashboard" className="text-2xl font-bold hover:text-primary transition-colors" onClick={() => setIsMenuOpen(false)}>Dashboard</Link>
+                  {user.role === UserRole.ADMIN && <Link to="/admin" className="text-2xl font-bold text-primary" onClick={() => setIsMenuOpen(false)}>Admin</Link>}
+                  <button onClick={signOut} className="text-left text-2xl font-bold text-red-500">Log Out</button>
                 </>
               ) : (
                 <>
-                  <Link to="/login" className="text-5xl font-black italic uppercase tracking-tighter" onClick={() => setIsMenuOpen(false)}>Sign In</Link>
-                  <Link to="/register" className="text-5xl font-black italic uppercase tracking-tighter text-primary" onClick={() => setIsMenuOpen(false)}>Get VIP Access</Link>
+                  <Link to="/login" className="text-2xl font-bold" onClick={() => setIsMenuOpen(false)}>Sign In</Link>
+                  <Link to="/register" className="text-2xl font-bold text-primary" onClick={() => setIsMenuOpen(false)}>Get Premium</Link>
                 </>
               )}
             </motion.div>
@@ -200,17 +200,17 @@ const AppLayout: React.FC = () => {
       
       <footer className="bg-dark-bg border-t border-white/5 py-12 relative overflow-hidden">
         <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-64 bg-primary/5 blur-[120px] rounded-full pointer-events-none"></div>
-        <div className="max-w-7xl mx-auto px-6 text-center space-y-8 relative z-10">
-          <div className="flex flex-col items-center space-y-6">
-            <BrandIcon className="w-24 h-24" />
-            <div className="flex flex-col">
-              <span className="text-4xl font-black tracking-tighter uppercase italic leading-none text-silver">
-                Betta<span className="text-primary text-glow">Bets</span>
+        <div className="max-w-7xl mx-auto px-6 text-center space-y-6 relative z-10">
+          <div className="flex flex-col items-center space-y-4">
+            <BrandIcon className="w-12 h-12" />
+            <div className="flex flex-col text-center">
+              <span className="text-2xl font-bold tracking-tight text-white mb-1">
+                Betta<span className="text-primary">Bets</span>
               </span>
-              <span className="technical-label mt-2">Professional Betting Channel</span>
+              <span className="text-xs text-gray-400">Professional Analytics</span>
             </div>
           </div>
-          <p className="text-gray-500 text-[9px] max-w-xl mx-auto leading-loose uppercase font-black tracking-[0.3em] opacity-40">
+          <p className="text-gray-500 text-xs max-w-xl mx-auto leading-relaxed">
             Expert analysis for consistent soccer profit. Verified success rates and expert market insights. Please bet responsibly. 18+ Only.
           </p>
         </div>

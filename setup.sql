@@ -105,9 +105,11 @@ CREATE TABLE IF NOT EXISTS public.app_config (
   "ethAddress" text default '',
   "solAddress" text default '',
   ticker_speed integer default 20,
+  youtube_video_id text default 'qXf6n3m03sA',
   popup jsonb default '{"active": false, "title": "", "content": ""}'::jsonb,
   prices jsonb default '{"VIP": 10, "VVIP": 30}'::jsonb
 );
+ALTER TABLE public.app_config ADD COLUMN IF NOT EXISTS youtube_video_id text default 'qXf6n3m03sA';
 ALTER TABLE public.app_config ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS "config_all" ON app_config;
 CREATE POLICY "config_all" ON app_config FOR ALL USING (true);

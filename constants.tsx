@@ -13,6 +13,7 @@ export const DEFAULT_APP_CONFIG: AppConfig = {
   ethAddress: '0x1234567890abcdef1234567890abcdef12345678',
   solAddress: 'So11111111111111111111111111111111111111112',
   ticker_speed: 40,
+  youtube_video_id: 'qXf6n3m03sA',
   popup: {
     active: false,
     title: 'XAF Special Promo!',

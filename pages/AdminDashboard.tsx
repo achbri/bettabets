@@ -55,40 +55,44 @@ const AdminDashboard: React.FC = () => {
   ];
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-16 animate-in fade-in duration-500">
-      <div className="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6">
+    <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row gap-12 py-12">
+      {/* Sidebar Navigation */}
+      <div className="w-full md:w-64 flex-shrink-0 space-y-8">
         <div>
-          <h1 className="text-6xl font-black uppercase italic tracking-tighter mb-3">
-            ADMIN <span className="text-[#00C853]">DESK</span>
+          <h1 className="text-3xl font-bold tracking-tight mb-2">
+            Admin <span className="text-primary">Desk</span>
           </h1>
-          <p className="text-gray-500 font-bold uppercase tracking-[0.2em] text-[10px]">Cloud Infrastructure Control</p>
+          <p className="text-gray-500 font-medium text-xs">Platform Management Control</p>
         </div>
-        <div className="flex items-center gap-3 bg-slate-100 dark:bg-white/5 p-4 rounded-3xl border border-slate-200 dark:border-white/10">
-          <Clock className="w-5 h-5 text-[#00C853]" />
-          <span className="text-[11px] font-black uppercase tracking-widest">{new Date().toLocaleTimeString()} • SYSTEM STABLE</span>
-        </div>
+
+        <nav className="flex flex-col gap-2">
+          {navItems.map(item => (
+            <NavLink 
+              key={item.to}
+              to={item.to}
+              className={({ isActive }) => `flex items-center justify-between px-4 py-3 rounded-xl font-semibold text-sm transition-all ${isActive ? 'bg-primary/10 text-primary border border-primary/20' : 'text-gray-400 hover:text-white hover:bg-white/5 border border-transparent'}`}
+            >
+              <div className="flex items-center gap-3">
+                {React.createElement(item.icon as any, { className: "w-4 h-4" })}
+                {item.label}
+              </div>
+              {item.badge && item.badge > 0 && (
+                <span className="bg-primary text-black text-[10px] font-bold px-2 py-0.5 rounded-full">
+                  {item.badge}
+                </span>
+              )}
+            </NavLink>
+          ))}
+        </nav>
       </div>
 
-      <div className="flex flex-wrap gap-2 mb-10 bg-slate-100 dark:bg-white/5 p-2 rounded-[2.5rem] border border-slate-200 dark:border-white/5 overflow-x-auto custom-scrollbar shadow-inner">
-        {navItems.map(item => (
-          <NavLink 
-            key={item.to}
-            to={item.to}
-            className={({ isActive }) => `flex items-center gap-3 px-8 py-5 rounded-[2rem] font-black text-[11px] uppercase tracking-widest transition-all whitespace-nowrap relative ${isActive ? 'bg-[#00C853] text-black shadow-lg shadow-[#00C853]/30 scale-105' : 'text-gray-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-white/10'}`}
-          >
-            {React.createElement(item.icon as any, { className: "w-4 h-4" })}
-            {item.label}
-            {item.badge && item.badge > 0 && (
-              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[8px] font-black w-5 h-5 rounded-full flex items-center justify-center border-2 border-white dark:border-[#0a0a0a] animate-bounce">
-                {item.badge}
-              </span>
-            )}
-          </NavLink>
-        ))}
-      </div>
-
-      <div className="animate-in slide-in-from-bottom-4 duration-500">
-        <Outlet />
+      {/* Main Content Area */}
+      <div className="flex-1 w-full bg-black/20 border border-white/5 rounded-3xl p-6 md:p-10 shadow-2xl relative overflow-hidden min-h-[500px]">
+        {/* Subtle background glow */}
+        <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 blur-[100px] rounded-full pointer-events-none"></div>
+        <div className="animate-in fade-in duration-300 relative z-10">
+          <Outlet />
+        </div>
       </div>
     </div>
   );

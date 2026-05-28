@@ -80,6 +80,7 @@ export interface AppConfig {
   ethAddress: string;
   solAddress: string;
   ticker_speed?: number; // Speed in seconds for a full scroll
+  youtube_video_id?: string; // YouTube video ID for the hero section
   popup: {
     active: boolean;
     title: string;

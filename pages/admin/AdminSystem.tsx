@@ -79,17 +79,25 @@ const AdminSystem: React.FC = () => {
       </div>
       
       {/* Platform Branding */}
-      <div className="flex items-center gap-8 bg-slate-100 dark:bg-white/5 p-8 rounded-[3rem] border border-white/5">
-        <div className="w-28 h-28 bg-white dark:bg-black/40 rounded-[2rem] flex items-center justify-center overflow-hidden border border-white/10 group relative shadow-inner">
-          {config.logo ? <img src={config.logo} className="w-full h-full object-contain" /> : <Trophy className="w-12 h-12 text-gray-700" />}
-          <label className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex items-center justify-center cursor-pointer transition-all">
-            <Camera className="w-6 h-6 text-[#00C853]" />
-            <input type="file" className="hidden" accept="image/*" onChange={handleLogoUpload} />
-          </label>
+      <div className="space-y-6">
+        <div className="flex items-center gap-8 bg-slate-100 dark:bg-white/5 p-8 rounded-[3rem] border border-white/5">
+          <div className="w-28 h-28 bg-white dark:bg-black/40 rounded-[2rem] flex items-center justify-center overflow-hidden border border-white/10 group relative shadow-inner">
+            {config.logo ? <img src={config.logo} className="w-full h-full object-contain" /> : <Trophy className="w-12 h-12 text-gray-700" />}
+            <label className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex items-center justify-center cursor-pointer transition-all">
+              <Camera className="w-6 h-6 text-[#00C853]" />
+              <input type="file" className="hidden" accept="image/*" onChange={handleLogoUpload} />
+            </label>
+          </div>
+          <div className="flex-1">
+              <p className="text-[11px] text-gray-500 font-black uppercase tracking-wider mb-2">Platform Branding Node</p>
+              <p className="text-[9px] text-gray-400 font-bold uppercase leading-relaxed">Update your master logo here. Preferred format: Transparent PNG or SVG.</p>
+          </div>
         </div>
-        <div className="flex-1">
-            <p className="text-[11px] text-gray-500 font-black uppercase tracking-wider mb-2">Platform Branding Node</p>
-            <p className="text-[9px] text-gray-400 font-bold uppercase leading-relaxed">Update your master logo here. Preferred format: Transparent PNG or SVG.</p>
+
+        <div className="bg-slate-100 dark:bg-white/5 p-8 rounded-[3rem] border border-white/5">
+          <label className="text-[9px] font-black uppercase text-gray-400 mb-2 block px-2 tracking-widest">YouTube Video ID (Hero Section)</label>
+          <input type="text" placeholder="e.g. qXf6n3m03sA" className="w-full bg-white dark:bg-black/40 border border-white/10 p-5 rounded-2xl font-bold text-xs outline-none focus:border-[#00C853]/40" value={config.youtube_video_id || ''} onChange={e => setConfig({...config, youtube_video_id: e.target.value})} />
+          <p className="text-[9px] text-gray-400 mt-3 px-2">Leave blank to hide the video player. ID only (not full URL).</p>
         </div>
       </div>
 

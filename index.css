@@ -31,44 +31,39 @@
 
 @layer components {
   .glass {
-    @apply bg-white/5 backdrop-blur-xl border border-white/10 rounded-4xl;
+    @apply bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl;
   }
   
   .glass-light {
-    @apply bg-black/5 backdrop-blur-xl border border-black/10 rounded-4xl;
+    @apply bg-black/5 backdrop-blur-md border border-black/10 rounded-2xl;
   }
 
   .vip-glow-card {
-    @apply relative overflow-hidden;
-  }
-
-  .vip-glow-card::before {
-    content: '';
-    @apply absolute -inset-[1px] bg-gradient-to-r from-primary/50 via-primary/10 to-primary/50 rounded-[inherit] -z-10 opacity-30;
+    @apply border border-primary/20 rounded-2xl;
   }
 
   .text-glow {
-    text-shadow: 0 0 20px rgba(0, 153, 255, 0.4);
+    text-shadow: 0 0 10px rgba(0, 153, 255, 0.2);
   }
 
   .text-accent-glow {
-    text-shadow: 0 0 15px rgba(182, 255, 0, 0.5);
+    text-shadow: 0 0 10px rgba(182, 255, 0, 0.2);
   }
 
   .btn-primary {
-    @apply bg-primary text-white px-8 py-4 rounded-2xl font-black uppercase italic tracking-tight hover:scale-[1.02] active:scale-[0.98] transition-all shadow-[0_10px_30px_rgba(0,153,255,0.3)] hover:shadow-[0_15px_40px_rgba(0,153,255,0.4)];
+    @apply bg-primary text-white px-6 py-3 rounded-xl font-bold tracking-wide hover:bg-primary/90 transition-all shadow-sm;
   }
 
   .technical-label {
-    @apply text-[9px] font-black uppercase tracking-[0.3em] opacity-40;
+    @apply text-xs font-semibold uppercase tracking-wider opacity-70;
   }
 
   .text-silver {
-    @apply bg-gradient-to-b from-white via-gray-300 to-gray-500 bg-clip-text text-transparent;
+    @apply bg-gradient-to-b from-white via-gray-200 to-gray-400 bg-clip-text text-transparent;
   }
   
   .border-silver {
-    @apply border-white/20 hover:border-white/40;
+    @apply border-white/20 hover:border-white/30;
   }
 }
 

@@ -79,48 +79,50 @@ const AdminPayments: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h2 className="text-3xl font-black italic uppercase tracking-tighter">Payments</h2>
-        <div className="text-[10px] font-black uppercase text-gray-500 tracking-widest">{payments.length} Submissions</div>
+      <div className="flex justify-between items-center border-b border-white/5 pb-4">
+        <h2 className="text-2xl font-bold tracking-tight text-white flex items-center gap-2">
+          <CreditCard className="w-5 h-5 text-primary" /> Payments
+        </h2>
+        <div className="text-xs font-medium text-gray-500 bg-white/5 px-3 py-1 rounded-full">{payments.length} Submissions</div>
       </div>
 
       {loading ? (
-        <div className="p-20 text-center"><Loader2 className="w-12 h-12 text-[#00C853] animate-spin mx-auto" /></div>
+        <div className="p-20 text-center"><Loader2 className="w-8 h-8 text-primary animate-spin mx-auto" /></div>
       ) : (
         <div className="grid grid-cols-1 gap-4">
           {payments.map(p => (
-            <div key={p.id} className="glass p-8 rounded-[3rem] flex flex-col md:flex-row items-center justify-between gap-8 bg-white dark:bg-black/40 border-white/5 transition-all hover:border-white/10">
-              <div className="flex items-center gap-6">
+            <div key={p.id} className="glass p-5 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-6 bg-black/20 border-white/5 transition-colors hover:bg-black/30">
+              <div className="flex items-center gap-5 w-full md:w-auto">
                 <button 
                   onClick={() => setViewingProof(p.proofUrl)}
-                  className="w-16 h-16 bg-slate-100 dark:bg-white/5 rounded-2xl flex items-center justify-center border border-white/10 hover:border-[#00C853] transition-colors group"
+                  className="w-12 h-12 bg-white/5 rounded-xl flex items-center justify-center border border-white/10 hover:border-primary transition-colors group flex-shrink-0"
                 >
-                  <Eye className="w-6 h-6 text-gray-500 group-hover:text-[#00C853]" />
+                  <Eye className="w-5 h-5 text-gray-400 group-hover:text-primary" />
                 </button>
-                <div>
-                  <div className="font-black italic uppercase text-xl mb-1">{p.username}</div>
-                  <div className="text-[10px] font-black text-gray-500 uppercase tracking-widest flex flex-wrap gap-3 items-center">
-                    <span className="text-[#00C853] bg-[#00C853]/5 px-2 py-0.5 rounded border border-[#00C853]/10">{p.plan}</span>
-                    <span className="text-white font-bold">{p.amount}</span>
-                    <span className="bg-white/5 px-2 py-0.5 rounded border border-white/10">{p.method}</span>
-                    <span className="opacity-40">{new Date(p.date).toLocaleDateString()}</span>
+                <div className="flex-1 min-w-0">
+                  <div className="flex flex-col md:flex-row md:items-center gap-1 md:gap-3 mb-1">
+                    <span className="text-base font-bold text-white truncate">{p.username}</span>
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-primary bg-primary/10 px-2 py-0.5 rounded">{p.plan}</span>
+                  </div>
+                  <div className="text-xs text-gray-400">
+                    {p.amount} • {p.method} • {new Date(p.date).toLocaleString()}
                   </div>
                 </div>
               </div>
 
-              <div className="flex gap-3">
+              <div className="flex items-center gap-3 w-full md:w-auto justify-end">
                 {p.status === PaymentStatus.PENDING ? (
                   <>
-                    <button onClick={() => handleApprovePayment(p)} className="bg-[#00C853] text-black px-8 py-4 rounded-2xl font-black text-[10px] uppercase italic hover:scale-105 active:scale-95 transition-all shadow-lg shadow-[#00C853]/20 flex items-center gap-2">
+                    <button onClick={() => handleApprovePayment(p)} className="flex items-center gap-1.5 px-4 py-2 bg-primary/10 text-primary border border-primary/20 rounded-lg text-sm font-semibold hover:bg-primary/20 transition-all">
                       <Check className="w-4 h-4" /> Approve
                     </button>
-                    <button onClick={() => handleRejectPayment(p.id)} className="bg-red-500/10 text-red-500 px-8 py-4 rounded-2xl font-black text-[10px] uppercase italic hover:bg-red-500/20 transition-all flex items-center gap-2">
+                    <button onClick={() => handleRejectPayment(p.id)} className="flex items-center gap-1.5 px-4 py-2 bg-red-500/10 text-red-500 border border-red-500/20 rounded-lg text-sm font-semibold hover:bg-red-500/20 transition-all">
                       <X className="w-4 h-4" /> Reject
                     </button>
                   </>
                 ) : (
-                  <div className={`px-8 py-4 rounded-2xl font-black text-[10px] uppercase italic flex items-center gap-2 border ${
-                    p.status === PaymentStatus.APPROVED ? 'bg-[#00C853]/5 border-[#00C853]/20 text-[#00C853]' : 'bg-red-500/5 border-red-500/20 text-red-500'
+                  <div className={`px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 ${
+                    p.status === PaymentStatus.APPROVED ? 'bg-primary/5 text-primary' : 'bg-red-500/5 text-red-500'
                   }`}>
                     {p.status === PaymentStatus.APPROVED ? <CheckCircle className="w-4 h-4" /> : <XCircle className="w-4 h-4" />}
                     {p.status}
@@ -130,8 +132,8 @@ const AdminPayments: React.FC = () => {
             </div>
           ))}
           {payments.length === 0 && (
-            <div className="p-32 text-center glass rounded-[4rem] border-dashed border-white/5 opacity-30">
-              <p className="text-[10px] font-black uppercase tracking-[0.5em]">No payment records found</p>
+            <div className="p-20 text-center glass rounded-2xl border-dashed border-white/5 opacity-50">
+              <p className="text-xs font-semibold uppercase tracking-wider">No payment records found</p>
             </div>
           )}
         </div>
