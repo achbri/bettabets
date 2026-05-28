@@ -95,9 +95,22 @@ const AdminSystem: React.FC = () => {
         </div>
 
         <div className="bg-slate-100 dark:bg-white/5 p-8 rounded-[3rem] border border-white/5">
-          <label className="text-[9px] font-black uppercase text-gray-400 mb-2 block px-2 tracking-widest">YouTube Video ID (Hero Section)</label>
-          <input type="text" placeholder="e.g. qXf6n3m03sA" className="w-full bg-white dark:bg-black/40 border border-white/10 p-5 rounded-2xl font-bold text-xs outline-none focus:border-[#00C853]/40" value={config.youtube_video_id || ''} onChange={e => setConfig({...config, youtube_video_id: e.target.value})} />
-          <p className="text-[9px] text-gray-400 mt-3 px-2">Leave blank to hide the video player. ID only (not full URL).</p>
+          <label className="text-[9px] font-black uppercase text-gray-400 mb-2 block px-2 tracking-widest">YouTube Video (ID or Full Link)</label>
+          <input 
+            type="text" 
+            placeholder="e.g. lUDFmed5Nvk or https://youtu.be/..." 
+            className="w-full bg-white dark:bg-black/40 border border-white/10 p-5 rounded-2xl font-bold text-xs outline-none focus:border-[#00C853]/40" 
+            value={config.youtube_video_id || ''} 
+            onChange={e => {
+              let val = e.target.value;
+              const match = val.match(/(?:youtu\.be\/|youtube\.com\/(?:.*[?&]v=|embed\/))([\w-]{11})/);
+              if (match && match[1]) {
+                val = match[1];
+              }
+              setConfig({...config, youtube_video_id: val});
+            }} 
+          />
+          <p className="text-[9px] text-gray-400 mt-3 px-2">Paste a full YouTube link, and it will automatically extract the ID for you.</p>
         </div>
       </div>
 

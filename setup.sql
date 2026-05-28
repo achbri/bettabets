@@ -175,3 +175,6 @@ CREATE POLICY "ticker_all" ON ticker_messages FOR ALL USING (true);
 -- It creates a bucket named "payment_proofs" and sets it public
 insert into storage.buckets (id, name, public) values ('payment_proofs', 'payment_proofs', true) on conflict do nothing;
 insert into storage.buckets (id, name, public) values ('profiles', 'profiles', true) on conflict do nothing;
+
+-- Reload schema cache to ensure column alterations reflect immediately on the PostgREST API
+NOTIFY pgrst, 'reload schema';

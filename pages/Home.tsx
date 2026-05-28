@@ -96,9 +96,6 @@ const Home: React.FC = () => {
     };
 
     fetchData();
-    const handleVisibility = () => document.visibilityState === 'visible' && fetchData();
-    document.addEventListener('visibilitychange', handleVisibility);
-    return () => document.removeEventListener('visibilitychange', handleVisibility);
   }, []);
 
   const closePopup = () => {

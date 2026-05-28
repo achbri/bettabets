@@ -111,55 +111,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
     });
 
-    // Smart Visibility Listener
-    const handleVisible = async () => {
-      if (document.visibilityState === 'visible') {
-        const now = Date.now();
-        // Check every time but throttle the actual API call
-        if (now - lastCheck.current < 60000) return;
-        lastCheck.current = now;
-
-        console.log("App resumed, ensuring session is active...");
-        try {
-          const { data: { session }, error } = await supabase.auth.getSession();
-          
-          if (error) {
-            console.warn("Session retrieval error on resume:", error);
-            // If we have an error, try a force refresh
-            const { data: refreshed } = await supabase.auth.refreshSession();
-            await syncAuth(refreshed.session);
-          } else if (session) {
-            // Check if token is near expiry (less than 5 mins)
-            const expiresAt = session.expires_at || 0;
-            const buffer = 300; // 5 mins
-            if (expiresAt - (Date.now() / 1000) < buffer) {
-              console.log("Token near expiry, refreshing...");
-              const { data: refreshed } = await supabase.auth.refreshSession();
-              await syncAuth(refreshed.session);
-            } else {
-              await syncAuth(session);
-            }
-          } else if (userRef.current) {
-            // We were logged in but session is gone - attempt one recovery
-            console.log("Session lost, attempting recovery...");
-            const { data: refreshed } = await supabase.auth.refreshSession();
-            if (refreshed.session) {
-              await syncAuth(refreshed.session);
-            } else {
-              setUser(null);
-            }
-          }
-        } catch (e) {
-          console.error("Critical resume error:", e);
-        }
-      }
-    };
-
-    document.addEventListener('visibilitychange', handleVisible);
-
     return () => {
       subscription.unsubscribe();
-      document.removeEventListener('visibilitychange', handleVisible);
     };
   }, []);
 
