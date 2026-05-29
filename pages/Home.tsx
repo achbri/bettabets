@@ -117,13 +117,22 @@ const Home: React.FC = () => {
       <style>{`@keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }`}</style>
       
       {/* Hero Section */}
-      <section className="relative min-h-[70vh] flex flex-col items-center justify-between px-6 max-w-7xl mx-auto py-12 md:py-20 lg:flex-row gap-12">
+      <section className="relative w-full min-h-[70vh] flex flex-col justify-center overflow-hidden">
+        
+        {/* Full bleed background image */}
         <div 
-          className="absolute inset-0 -z-10 w-full h-full opacity-30 pointer-events-none bg-cover bg-center [mask-image:linear-gradient(to_bottom,white,transparent)] md:[mask-image:linear-gradient(to_left,white,transparent)]"
-          style={{ backgroundImage: `url('https://images.unsplash.com/photo-1489944440615-453fc2b6a9a9?q=80&w=2000&auto=format&fit=crop')` }}
+          className="absolute inset-0 w-full h-full opacity-50 pointer-events-none bg-cover bg-center"
+          style={{ backgroundImage: `url('https://images.unsplash.com/photo-1489944440615-453fc2b6a9a9?q=80&w=1023&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')` }}
         ></div>
         
-        <div className="w-full lg:w-1/2 relative z-10 text-left space-y-6">
+        {/* Overlays to make text readable and blend with the app */}
+        <div className="absolute inset-0 bg-gradient-to-t from-dark-bg via-dark-bg/80 to-transparent pointer-events-none"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-dark-bg via-dark-bg/60 to-transparent pointer-events-none"></div>
+        <div className="absolute inset-0 bg-black/30 pointer-events-none"></div>
+        
+        <div className="max-w-7xl w-full mx-auto px-6 py-20 flex flex-col lg:flex-row items-center justify-between gap-12 relative z-10">
+          
+          <div className="w-full lg:w-1/2 relative z-10 text-left space-y-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -191,6 +200,7 @@ const Home: React.FC = () => {
             </div>
           </motion.div>
         )}
+        </div>
       </section>
 
       {/* Ticker Section */}
