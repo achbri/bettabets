@@ -118,7 +118,10 @@ const Home: React.FC = () => {
       
       {/* Hero Section */}
       <section className="relative min-h-[70vh] flex flex-col items-center justify-between px-6 max-w-7xl mx-auto py-12 md:py-20 lg:flex-row gap-12">
-        <div className="absolute top-0 right-0 -z-10 w-full h-full opacity-20 pointer-events-none bg-[url('https://images.unsplash.com/photo-1511886929837-354d827aae26?q=80&w=2064&auto=format&fit=crop')] bg-cover bg-center [mask-image:linear-gradient(to_bottom,white,transparent)] md:[mask-image:linear-gradient(to_left,white,transparent)]"></div>
+        <div 
+          className="absolute inset-0 -z-10 w-full h-full opacity-30 pointer-events-none bg-cover bg-center [mask-image:linear-gradient(to_bottom,white,transparent)] md:[mask-image:linear-gradient(to_left,white,transparent)]"
+          style={{ backgroundImage: `url('https://images.unsplash.com/photo-1489944440615-453fc2b6a9a9?q=80&w=2000&auto=format&fit=crop')` }}
+        ></div>
         
         <div className="w-full lg:w-1/2 relative z-10 text-left space-y-6">
           <motion.div
