@@ -356,7 +356,7 @@ const UserDashboard: React.FC<UserDashboardProps> = ({ config }) => {
                               cat === PredictionCategory.SUREST ? 'bg-[#D5D04A]/10 text-[#D5D04A] border-[#D5D04A]/20' :
                               cat === PredictionCategory.VVIP ? 'bg-[#FFD700]/10 text-[#FFD700] border-[#FFD700]/20' :
                               cat === PredictionCategory.VIP ? 'bg-primary/10 text-primary border-primary/20' :
-                              'bg-white/5 text-gray-300 border-white/10'
+                              'bg-blue-500/10 text-blue-500 border-blue-500/20'
                             }`}>
                               <div className="text-[10px] font-bold uppercase tracking-wider">
                                 {cat === PredictionCategory.SUREST ? 'Surest Bet' : `${cat} Tips`}

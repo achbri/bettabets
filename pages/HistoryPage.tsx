@@ -108,6 +108,7 @@ const HistoryPage: React.FC<HistoryPageProps> = ({ config }) => {
       const date = p.date;
       if (!acc[date]) {
         acc[date] = {
+          [PredictionCategory.SUREST]: [],
           [PredictionCategory.FREE]: [],
           [PredictionCategory.VIP]: [],
           [PredictionCategory.VVIP]: []
@@ -186,18 +187,19 @@ const HistoryPage: React.FC<HistoryPageProps> = ({ config }) => {
                   className="p-8 space-y-8 animate-in slide-in-from-top-2 duration-300 relative bg-[#0a0a0a]"
                 >
                   <div className="relative z-10 space-y-10">
-                    {[PredictionCategory.FREE, PredictionCategory.VIP, PredictionCategory.VVIP].map((cat) => {
+                    {[PredictionCategory.SUREST, PredictionCategory.FREE, PredictionCategory.VIP, PredictionCategory.VVIP].map((cat) => {
                       const tips = categories[cat];
-                      if (tips.length === 0) return null;
+                      if (!tips || tips.length === 0) return null;
 
                       const totalOdds = tips.reduce((sum, p) => sum * Number(p.odds), 1).toFixed(2);
 
                       return (
                         <div key={cat} className="space-y-6">
                           <div className={`flex items-center justify-between px-6 py-4 rounded-2xl ${
+                            cat === PredictionCategory.SUREST ? 'bg-[#D5D04A] text-black' :
                             cat === PredictionCategory.VVIP ? 'bg-[#FFD700] text-black' :
                             cat === PredictionCategory.VIP ? 'bg-[#00C853] text-black' :
-                            'bg-gray-800 text-gray-300'
+                            'bg-blue-500 text-white'
                           }`}>
                             <div className="text-[11px] font-black uppercase tracking-[0.2em]">
                               {cat} MARKET

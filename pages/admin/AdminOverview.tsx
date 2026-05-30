@@ -25,6 +25,8 @@ const AdminOverview: React.FC = () => {
     losses: 0,
     freeWins: 0,
     freeTotal: 0,
+    surestWins: 0,
+    surestTotal: 0,
     vipWins: 0,
     vipTotal: 0,
     vvipWins: 0,
@@ -59,10 +61,12 @@ const AdminOverview: React.FC = () => {
       const losses = predData?.filter(p => p.result === PredictionResult.LOSS).length || 0;
       
       const freeTips = predData?.filter(p => p.category === 'FREE' && p.result !== PredictionResult.PENDING) || [];
+      const surestTips = predData?.filter(p => p.category === 'SUREST' && p.result !== PredictionResult.PENDING) || [];
       const vipTips = predData?.filter(p => p.category === 'VIP' && p.result !== PredictionResult.PENDING) || [];
       const vvipTips = predData?.filter(p => p.category === 'VVIP' && p.result !== PredictionResult.PENDING) || [];
 
       const freeWins = freeTips.filter(p => p.result === PredictionResult.WIN).length;
+      const surestWins = surestTips.filter(p => p.result === PredictionResult.WIN).length;
       const vipWins = vipTips.filter(p => p.result === PredictionResult.WIN).length;
       const vvipWins = vvipTips.filter(p => p.result === PredictionResult.WIN).length;
 
@@ -81,7 +85,7 @@ const AdminOverview: React.FC = () => {
       const predictionsByDate = (predData || []).reduce((acc: any, p) => {
         if (!p.date || p.result === PredictionResult.PENDING) return acc;
         const date = new Date(p.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-        if (!acc[date]) acc[date] = { date, FREE: { w: 0, t: 0 }, VIP: { w: 0, t: 0 }, VVIP: { w: 0, t: 0 } };
+        if (!acc[date]) acc[date] = { date, SUREST: { w: 0, t: 0 }, FREE: { w: 0, t: 0 }, VIP: { w: 0, t: 0 }, VVIP: { w: 0, t: 0 } };
         
         acc[date][p.category].t += 1;
         if (p.result === PredictionResult.WIN) acc[date][p.category].w += 1;
@@ -92,6 +96,7 @@ const AdminOverview: React.FC = () => {
       const processedMarketData = Object.values(predictionsByDate)
         .map((day: any) => ({
           date: day.date,
+          SUREST: day.SUREST.t > 0 ? Math.round((day.SUREST.w / day.SUREST.t) * 100) : 0,
           FREE: day.FREE.t > 0 ? Math.round((day.FREE.w / day.FREE.t) * 100) : 0,
           VIP: day.VIP.t > 0 ? Math.round((day.VIP.w / day.VIP.t) * 100) : 0,
           VVIP: day.VVIP.t > 0 ? Math.round((day.VVIP.w / day.VVIP.t) * 100) : 0
@@ -121,6 +126,8 @@ const AdminOverview: React.FC = () => {
         losses,
         freeWins,
         freeTotal: freeTips.length,
+        surestWins,
+        surestTotal: surestTips.length,
         vipWins,
         vipTotal: vipTips.length,
         vvipWins,
@@ -230,9 +237,13 @@ const AdminOverview: React.FC = () => {
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={marketPerformanceData}>
                 <defs>
+                  <linearGradient id="colorSurest" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#D5D04A" stopOpacity={0.3}/>
+                    <stop offset="95%" stopColor="#D5D04A" stopOpacity={0}/>
+                  </linearGradient>
                   <linearGradient id="colorFree" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#94a3b8" stopOpacity={0.3}/>
-                    <stop offset="95%" stopColor="#94a3b8" stopOpacity={0}/>
+                    <stop offset="5%" stopColor="#3B82F6" stopOpacity={0.3}/>
+                    <stop offset="95%" stopColor="#3B82F6" stopOpacity={0}/>
                   </linearGradient>
                   <linearGradient id="colorVip" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="5%" stopColor="#00C853" stopOpacity={0.3}/>
@@ -247,7 +258,8 @@ const AdminOverview: React.FC = () => {
                 <XAxis dataKey="date" axisLine={false} tickLine={false} tick={{fill: '#666', fontSize: 10}} />
                 <YAxis domain={[0, 100]} axisLine={false} tickLine={false} tick={{fill: '#666', fontSize: 10}} />
                 <Tooltip content={<CustomTooltip />} />
-                <Area type="monotone" dataKey="FREE" stroke="#94a3b8" strokeWidth={3} fillOpacity={1} fill="url(#colorFree)" />
+                <Area type="monotone" dataKey="SUREST" stroke="#D5D04A" strokeWidth={3} fillOpacity={1} fill="url(#colorSurest)" />
+                <Area type="monotone" dataKey="FREE" stroke="#3B82F6" strokeWidth={3} fillOpacity={1} fill="url(#colorFree)" />
                 <Area type="monotone" dataKey="VIP" stroke="#00C853" strokeWidth={3} fillOpacity={1} fill="url(#colorVip)" />
                 <Area type="monotone" dataKey="VVIP" stroke="#FFD700" strokeWidth={3} fillOpacity={1} fill="url(#colorVvip)" />
               </AreaChart>
@@ -255,7 +267,11 @@ const AdminOverview: React.FC = () => {
           </div>
           <div className="flex items-center justify-center gap-6">
             <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-slate-400"></div>
+              <div className="w-3 h-3 rounded-full bg-[#D5D04A]"></div>
+              <span className="text-[9px] font-black uppercase text-gray-500">Surest</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 rounded-full bg-blue-500"></div>
               <span className="text-[9px] font-black uppercase text-gray-500">Free</span>
             </div>
             <div className="flex items-center gap-2">
@@ -306,17 +322,33 @@ const AdminOverview: React.FC = () => {
           </div>
 
           <div className="space-y-6">
+            {/* Surest Market */}
+            <div>
+              <div className="flex justify-between mb-2">
+                <span className="text-[11px] font-black uppercase text-gray-400">Surest Market ({stats.surestWins}/{stats.surestTotal})</span>
+                <span className="text-[11px] font-black text-[#D5D04A]">
+                  {stats.surestTotal > 0 ? Math.round((stats.surestWins / stats.surestTotal) * 100) : 0}%
+                </span>
+              </div>
+              <div className="h-2 w-full bg-white/5 rounded-full overflow-hidden">
+                <div 
+                  className="h-full bg-[#D5D04A] shadow-[0_0_10px_#D5D04A] transition-all duration-1000" 
+                  style={{ width: `${stats.surestTotal > 0 ? (stats.surestWins / stats.surestTotal) * 100 : 0}%` }}
+                ></div>
+              </div>
+            </div>
+
             {/* Free Market */}
             <div>
               <div className="flex justify-between mb-2">
                 <span className="text-[11px] font-black uppercase text-gray-400">Free Market ({stats.freeWins}/{stats.freeTotal})</span>
-                <span className="text-[11px] font-black text-slate-400">
+                <span className="text-[11px] font-black text-blue-500">
                   {stats.freeTotal > 0 ? Math.round((stats.freeWins / stats.freeTotal) * 100) : 0}%
                 </span>
               </div>
               <div className="h-2 w-full bg-white/5 rounded-full overflow-hidden">
                 <div 
-                  className="h-full bg-slate-400 transition-all duration-1000" 
+                  className="h-full bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.8)] transition-all duration-1000" 
                   style={{ width: `${stats.freeTotal > 0 ? (stats.freeWins / stats.freeTotal) * 100 : 0}%` }}
                 ></div>
               </div>

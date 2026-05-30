@@ -35,10 +35,22 @@ const AdminDashboard: React.FC = () => {
   };
 
   useEffect(() => {
-    fetchNotificationCounts();
-    // Poll every 30 seconds for new updates
-    const interval = setInterval(fetchNotificationCounts, 30000);
-    return () => clearInterval(interval);
+    let isMounted = true;
+    let timeoutId: NodeJS.Timeout;
+
+    const poll = async () => {
+      if (isMounted) {
+        await fetchNotificationCounts();
+        timeoutId = setTimeout(poll, 30000);
+      }
+    };
+
+    poll();
+
+    return () => {
+      isMounted = false;
+      clearTimeout(timeoutId);
+    };
   }, [location.pathname]);
 
   const navItems = [

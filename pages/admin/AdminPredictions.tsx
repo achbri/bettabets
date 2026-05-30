@@ -237,7 +237,12 @@ const PredictionRow: React.FC<PredictionRowProps> = ({ p, settlingId, setSettlin
         <div className="flex-1">
           <div className="flex items-center gap-2 mb-1">
             <span className="text-[8px] font-black uppercase text-gray-500">{p.league} • {p.kickoffTime}</span>
-            <span className={`text-[7px] px-2 py-0.5 rounded font-black border ${p.category === PredictionCategory.FREE ? 'text-blue-400 border-blue-400/20' : 'text-[#00C853] border-[#00C853]/20'}`}>{p.category}</span>
+            <span className={`text-[7px] px-2 py-0.5 rounded font-black border ${
+              p.category === PredictionCategory.FREE ? 'text-blue-500 border-blue-500/20' : 
+              p.category === PredictionCategory.SUREST ? 'text-[#D5D04A] border-[#D5D04A]/20' : 
+              p.category === PredictionCategory.VVIP ? 'text-[#FFD700] border-[#FFD700]/20' : 
+              'text-[#00C853] border-[#00C853]/20'
+            }`}>{p.category}</span>
           </div>
           <h4 className="font-black italic uppercase text-md">{p.match} <span className="text-[#00C853]">→ {p.tip}</span></h4>
           {isSettled && <div className="text-[9px] font-black uppercase text-[#00C853] mt-1">{p.result} {p.score ? `(${p.score})` : ''}</div>}
