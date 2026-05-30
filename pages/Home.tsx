@@ -333,12 +333,16 @@ const Home: React.FC = () => {
                         <div className="h-px bg-white/5 mb-4"></div>
                         {tips.map((p) => (
                           <div key={p.id} className="bg-white/5 border border-white/5 rounded-2xl p-6 flex flex-col lg:flex-row lg:items-center justify-between gap-6 hover:bg-white/10 transition-all card">
-                            <div className="space-y-2">
+                            <div className="space-y-3">
                               <div className="flex items-center gap-3">
                                 <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-1 bg-primary/10 text-primary rounded-md border border-primary/20">{p.league}</span>
                                 <span className="text-[10px] text-gray-400 font-medium flex items-center gap-1.5"><Clock className="w-3 h-3" /> {p.kickoffTime}</span>
                               </div>
-                              <h3 className="text-lg md:text-xl font-bold tracking-tight text-white">{p.match}</h3>
+                              <div className="flex items-center gap-4">
+                                {p.homeLogo && <img src={p.homeLogo} alt="Home" className="w-8 h-8 object-contain" referrerPolicy="no-referrer" />}
+                                <h3 className="text-lg md:text-xl font-bold tracking-tight text-white">{p.match}</h3>
+                                {p.awayLogo && <img src={p.awayLogo} alt="Away" className="w-8 h-8 object-contain" referrerPolicy="no-referrer" />}
+                              </div>
                             </div>
                             
                             <div className="flex items-center gap-6 justify-between lg:justify-end">

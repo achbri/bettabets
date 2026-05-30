@@ -11,7 +11,8 @@ import {
   TrendingUp,
   Clock,
   Download,
-  Loader2
+  Loader2,
+  Sparkles
 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { INITIAL_PREDICTIONS } from '../constants';
@@ -211,23 +212,35 @@ const HistoryPage: React.FC<HistoryPageProps> = ({ config }) => {
 
                           <div className="grid gap-4">
                             {tips.map((tip) => (
-                              <div key={tip.id} className="flex flex-col md:flex-row md:items-center justify-between p-6 bg-[#0c0c0c] rounded-3xl border border-white/5 gap-6">
-                                <div className="flex-1">
-                                  <div className="text-[10px] font-black uppercase text-[#00C853] mb-1.5 tracking-wider">{tip.league}</div>
-                                  <h4 className="font-black uppercase italic text-lg text-white mb-1.5 tracking-tight">{tip.match}</h4>
-                                  <div className="text-[11px] font-bold text-gray-500">Pick: <span className="text-white">{tip.tip}</span> @ {tip.odds}</div>
-                                </div>
-                                <div className="flex items-center gap-5 justify-between md:justify-end">
-                                  <div className="bg-[#151515] px-6 py-3 rounded-2xl text-center border border-white/5 min-w-[100px]">
-                                    <div className="text-[9px] font-black text-gray-500 uppercase mb-1 tracking-tighter">FT Score</div>
-                                    <div className="text-sm font-mono font-black text-[#00C853]">{tip.score || 'N/A'}</div>
+                              <div key={tip.id} className="flex flex-col p-6 bg-[#0c0c0c] rounded-3xl border border-white/5 gap-6">
+                                <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                                  <div className="flex-1 space-y-2">
+                                    <div className="text-[10px] font-black uppercase text-[#00C853] mb-1.5 tracking-wider">{tip.league}</div>
+                                    <div className="flex items-center gap-4">
+                                      {tip.homeLogo && <img src={tip.homeLogo} alt="Home" className="w-8 h-8 object-contain" referrerPolicy="no-referrer" />}
+                                      <h4 className="font-black uppercase italic text-lg text-white tracking-tight">{tip.match}</h4>
+                                      {tip.awayLogo && <img src={tip.awayLogo} alt="Away" className="w-8 h-8 object-contain" referrerPolicy="no-referrer" />}
+                                    </div>
+                                    <div className="text-[11px] font-bold text-gray-500 mt-2">Pick: <span className="text-white">{tip.tip}</span> @ {tip.odds}</div>
                                   </div>
-                                  <div className={`px-8 py-3 rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] min-w-[100px] text-center ${
-                                    tip.result === PredictionResult.WIN ? 'bg-[#00C853]/10 text-[#00C853] border border-[#00C853]/20' : 'bg-red-500/10 text-red-500 border border-red-500/20'
-                                  }`}>
-                                    {tip.result}
+                                  <div className="flex items-center gap-5 justify-between md:justify-end">
+                                    <div className="bg-[#151515] px-6 py-3 rounded-2xl text-center border border-white/5 min-w-[100px]">
+                                      <div className="text-[9px] font-black text-gray-500 uppercase mb-1 tracking-tighter">FT Score</div>
+                                      <div className="text-sm font-mono font-black text-[#00C853]">{tip.score || 'N/A'}</div>
+                                    </div>
+                                    <div className={`px-8 py-3 rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] min-w-[100px] text-center ${
+                                      tip.result === PredictionResult.WIN ? 'bg-[#00C853]/10 text-[#00C853] border border-[#00C853]/20' : 'bg-red-500/10 text-red-500 border border-red-500/20'
+                                    }`}>
+                                      {tip.result}
+                                    </div>
                                   </div>
                                 </div>
+                                {tip.analysis && (
+                                  <div className="bg-primary/5 rounded-2xl p-4 border border-primary/10">
+                                    <div className="text-[9px] font-black uppercase text-primary mb-2 flex items-center gap-2">AI Strategic Analysis</div>
+                                    <p className="text-xs text-gray-400 leading-relaxed">{tip.analysis}</p>
+                                  </div>
+                                )}
                               </div>
                             ))}
                           </div>

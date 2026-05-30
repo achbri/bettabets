@@ -3,7 +3,7 @@ import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { User, SubscriptionType, SupportMessage, Prediction, PredictionCategory, PredictionResult } from '../types';
 import { supabase } from '../lib/supabase';
-import { Camera, User as UserIcon, MessageCircle, Lock, ChevronRight, Shield, Star, ThumbsUp, Clock, Target, Calendar, Loader2, ChevronDown, ChevronUp, Reply, CheckCircle2, Download, Trophy } from 'lucide-react';
+import { Camera, User as UserIcon, MessageCircle, Lock, ChevronRight, Shield, Star, ThumbsUp, Clock, Target, Calendar, Loader2, ChevronDown, ChevronUp, Reply, CheckCircle2, Download, Trophy, Sparkles } from 'lucide-react';
 import { useToast } from '../components/Toast';
 import { toPng } from 'html-to-image';
 
@@ -370,12 +370,16 @@ const UserDashboard: React.FC<UserDashboardProps> = ({ config }) => {
                               {tips.map((p) => (
                                 <div key={p.id} className="relative group overflow-hidden rounded-xl border border-white/5 bg-black/20 transition-all hover:bg-black/30">
                                   <div className={`p-4 md:p-5 flex flex-col md:flex-row md:items-center justify-between gap-4 ${!hasAccess ? 'blur-[4px] select-none pointer-events-none' : ''}`}>
-                                    <div className="flex-1 space-y-1">
+                                    <div className="flex-1 space-y-2">
                                       <div className="flex items-center gap-2 mb-1">
                                         <span className="text-[10px] bg-white/10 px-2 py-0.5 rounded text-gray-300 font-medium flex items-center gap-1"><Clock className="w-3 h-3" /> {p.kickoffTime}</span>
                                         <span className="text-[10px] font-bold uppercase text-primary border border-primary/20 px-2 py-0.5 rounded">{p.league}</span>
                                       </div>
-                                      <h4 className="text-sm md:text-base font-bold text-white group-hover:text-primary transition-colors">{p.match}</h4>
+                                      <div className="flex items-center gap-3">
+                                        {p.homeLogo && <img src={p.homeLogo} alt="Home" className="w-5 h-5 object-contain" referrerPolicy="no-referrer" />}
+                                        <h4 className="text-sm md:text-base font-bold text-white group-hover:text-primary transition-colors">{p.match}</h4>
+                                        {p.awayLogo && <img src={p.awayLogo} alt="Away" className="w-5 h-5 object-contain" referrerPolicy="no-referrer" />}
+                                      </div>
                                     </div>
                                     <div className="flex items-center gap-4 justify-between md:justify-end border-t md:border-t-0 border-white/5 pt-3 md:pt-0">
                                       <div className="text-right">
@@ -388,6 +392,15 @@ const UserDashboard: React.FC<UserDashboardProps> = ({ config }) => {
                                       </div>
                                     </div>
                                   </div>
+
+                                  {hasAccess && p.analysis && (
+                                    <div className="px-4 md:px-5 pb-4 md:pb-5 pt-0">
+                                      <div className="bg-primary/5 rounded-xl p-4 border border-primary/10">
+                                        <div className="text-[9px] font-black uppercase text-primary mb-1.5 flex items-center gap-1.5"><Sparkles className="w-3 h-3" /> AI Strategic Analysis</div>
+                                        <p className="text-xs text-gray-400 leading-relaxed italic">{p.analysis}</p>
+                                      </div>
+                                    </div>
+                                  )}
 
                                   {!hasAccess && (
                                     <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/50 backdrop-blur-sm z-10 p-4 text-center border border-white/10 rounded-xl">

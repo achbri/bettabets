@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { CreditCard, Eye, X, Check, XCircle, CheckCircle, Loader2 } from 'lucide-react';
+import { CreditCard, Eye, X, Check, XCircle, CheckCircle, Loader2, Bot } from 'lucide-react';
 import { PaymentRequest, PaymentStatus, SubscriptionType } from '../../types';
 import { supabase } from '../../lib/supabase';
 import { useToast } from '../../components/Toast';
@@ -10,10 +10,39 @@ const AdminPayments: React.FC = () => {
   const [payments, setPayments] = useState<PaymentRequest[]>([]);
   const [loading, setLoading] = useState(true);
   const [viewingProof, setViewingProof] = useState<string | null>(null);
+  const [verifyingId, setVerifyingId] = useState<string | null>(null);
+  const [verificationResult, setVerificationResult] = useState<{isValid: boolean, amount: number | null, confidence: number, reason: string} | null>(null);
 
   useEffect(() => {
     fetchPayments();
   }, []);
+
+  const verifyReceipt = async (paymentId: string, imageUrl: string) => {
+    setVerifyingId(paymentId);
+    setVerificationResult(null);
+    try {
+      const response = await fetch('/api/ai/verify-receipt', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ imageUrl })
+      });
+      const data = await response.json();
+      if (data.error) throw new Error(data.error);
+
+      let resultText = data.choices?.[0]?.message?.content?.trim() || "{}";
+      // Sanitize standard codeblocks to JSON
+      if (resultText.startsWith("```json")) {
+        resultText = resultText.replace(/```json/g, '').replace(/```/g, '').trim();
+      }
+      const parsed = JSON.parse(resultText);
+      setVerificationResult(parsed);
+      showToast(parsed.isValid ? "Receipt looks valid!" : "Potential invalid receipt detected", parsed.isValid ? "success" : "error");
+    } catch (err: any) {
+      showToast("Verification failed: " + err.message, "error");
+    } finally {
+      setVerifyingId(null);
+    }
+  };
 
   const fetchPayments = async () => {
     setLoading(true);
@@ -119,6 +148,11 @@ const AdminPayments: React.FC = () => {
                     <button onClick={() => handleRejectPayment(p.id)} className="flex items-center gap-1.5 px-4 py-2 bg-red-500/10 text-red-500 border border-red-500/20 rounded-lg text-sm font-semibold hover:bg-red-500/20 transition-all">
                       <X className="w-4 h-4" /> Reject
                     </button>
+                    {p.proofUrl && (
+                      <button onClick={() => verifyReceipt(p.id, p.proofUrl)} disabled={verifyingId === p.id} className="flex items-center gap-1.5 px-4 py-2 bg-blue-500/10 text-blue-400 border border-blue-500/20 rounded-lg text-sm font-semibold hover:bg-blue-500/20 transition-all disabled:opacity-50">
+                        {verifyingId === p.id ? <Loader2 className="w-4 h-4 animate-spin" /> : <Bot className="w-4 h-4" />} AI Verify
+                      </button>
+                    )}
                   </>
                 ) : (
                   <div className={`px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 ${

@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { Send, ShieldCheck, User as UserIcon, Trash2, Reply, Loader2 } from 'lucide-react';
+import { Send, ShieldCheck, User as UserIcon, Trash2, Reply, Loader2, Sparkles } from 'lucide-react';
 import { SupportMessage } from '../../types';
 import { supabase } from '../../lib/supabase';
 import { useToast } from '../../components/Toast';
@@ -44,6 +44,31 @@ const AdminMessages: React.FC = () => {
       fetchMessages(); 
     } else {
       showToast("Failed to reply: " + error.message, "error");
+    }
+  };
+
+  const [generatingReplyFor, setGeneratingReplyFor] = useState<string | null>(null);
+
+  const handleGenerateReply = async (id: string, content: string) => {
+    setGeneratingReplyFor(id);
+    try {
+      const response = await fetch('/api/ai/support', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          messages: [{ role: "user", content: `A user sent this support message: "${content}". Write a brief, helpful, professional reply as the BettaBets support team.` }]
+        })
+      });
+      const data = await response.json();
+      if (data.error) throw new Error(data.error);
+      const generatedText = data.choices?.[0]?.message?.content?.trim();
+      if (generatedText) {
+        setReplies(prev => ({ ...prev, [id]: generatedText }));
+      }
+    } catch (err: any) {
+      showToast("AI Failed: " + err.message, "error");
+    } finally {
+      setGeneratingReplyFor(null);
     }
   };
 
@@ -91,15 +116,24 @@ const AdminMessages: React.FC = () => {
                 <p className="text-sm font-bold">{m.adminReply}</p>
               </div>
             ) : (
-              <div className="flex gap-4">
-                <input 
-                  type="text" 
-                  placeholder="Type official reply..." 
-                  value={replies[m.id] || ''} 
-                  onChange={e => setReplies({...replies, [m.id]: e.target.value})} 
-                  className="flex-1 bg-white/5 border border-white/10 p-4 rounded-xl outline-none focus:border-[#00C853]/50 text-sm" 
-                />
-                <button onClick={() => handleReply(m.id)} className="bg-[#00C853] text-black px-8 rounded-xl font-black uppercase italic text-[10px]"><Send className="w-4 h-4" /></button>
+              <div className="space-y-3">
+                <div className="flex gap-4">
+                  <input 
+                    type="text" 
+                    placeholder="Type official reply..." 
+                    value={replies[m.id] || ''} 
+                    onChange={e => setReplies({...replies, [m.id]: e.target.value})} 
+                    className="flex-1 bg-white/5 border border-white/10 p-4 rounded-xl outline-none focus:border-[#00C853]/50 text-sm" 
+                  />
+                  <button onClick={() => handleReply(m.id)} className="bg-[#00C853] text-black px-8 rounded-xl font-black uppercase italic text-[10px] flex items-center justify-center"><Send className="w-4 h-4 ml-2" /> Send</button>
+                </div>
+                <button 
+                  onClick={() => handleGenerateReply(m.id, m.content)} 
+                  disabled={generatingReplyFor === m.id}
+                  className="flex items-center gap-2 text-[10px] font-black uppercase italic text-primary hover:bg-primary/10 px-3 py-1.5 rounded-lg border border-primary/20 transition-all disabled:opacity-50 w-fit"
+                >
+                  {generatingReplyFor === m.id ? <Loader2 className="w-3 h-3 animate-spin" /> : <Sparkles className="w-3 h-3" />} Generate AI Reply
+                </button>
               </div>
             )}
           </div>
