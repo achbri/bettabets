@@ -27,7 +27,7 @@ const AdminPayments: React.FC = () => {
         body: JSON.stringify({ imageUrl })
       });
       const data = await response.json();
-      if (data.error) throw new Error(data.error);
+      if (data.error) throw new Error(typeof data.error === 'object' ? data.error.message || JSON.stringify(data.error) : data.error);
 
       let resultText = data.choices?.[0]?.message?.content?.trim() || "{}";
       // Sanitize standard codeblocks to JSON

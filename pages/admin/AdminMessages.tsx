@@ -60,7 +60,7 @@ const AdminMessages: React.FC = () => {
         })
       });
       const data = await response.json();
-      if (data.error) throw new Error(data.error);
+      if (data.error) throw new Error(typeof data.error === 'object' ? data.error.message || JSON.stringify(data.error) : data.error);
       const generatedText = data.choices?.[0]?.message?.content?.trim();
       if (generatedText) {
         setReplies(prev => ({ ...prev, [id]: generatedText }));

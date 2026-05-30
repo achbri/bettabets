@@ -127,7 +127,7 @@ const AdminPredictions: React.FC = () => {
         body: JSON.stringify({ prompt: `Analyze the soccer match ${p.match} in ${p.league}. Provide a very concise strategic reasoning for why the tip '${p.tip}' is highly likely to win. Keep it professional, analytical, and max 3 sentences.` })
       });
       const data = await response.json();
-      if (data.error) throw new Error(data.error);
+      if (data.error) throw new Error(typeof data.error === 'object' ? data.error.message || JSON.stringify(data.error) : data.error);
       const analysisText = data.choices?.[0]?.message?.content?.trim();
       if (analysisText) {
         await updatePrediction(p.id, { analysis: analysisText });
@@ -150,7 +150,7 @@ const AdminPredictions: React.FC = () => {
         body: JSON.stringify({ match: p.match })
       });
       const data = await response.json();
-      if (data.error) throw new Error(data.error);
+      if (data.error) throw new Error(typeof data.error === 'object' ? data.error.message || JSON.stringify(data.error) : data.error);
       const generatedText = data.choices?.[0]?.message?.content?.trim() || "{}";
       const parsed = JSON.parse(generatedText);
       if (parsed.homeLogo || parsed.awayLogo) {
