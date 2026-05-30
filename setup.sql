@@ -69,8 +69,14 @@ CREATE TABLE IF NOT EXISTS public.predictions (
   category text,
   result text default 'PENDING',
   date text,
-  score text
+  score text,
+  analysis text,
+  "homeLogo" text,
+  "awayLogo" text
 );
+ALTER TABLE public.predictions ADD COLUMN IF NOT EXISTS analysis text;
+ALTER TABLE public.predictions ADD COLUMN IF NOT EXISTS "homeLogo" text;
+ALTER TABLE public.predictions ADD COLUMN IF NOT EXISTS "awayLogo" text;
 ALTER TABLE public.predictions ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS "predictions_all" ON predictions;
 CREATE POLICY "predictions_all" ON predictions FOR ALL USING (true);

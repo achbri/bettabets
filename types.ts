@@ -53,6 +53,9 @@ export interface Prediction {
   result: PredictionResult;
   date: string;
   score?: string; // Final match result
+  analysis?: string; // AI generated analysis
+  homeLogo?: string;
+  awayLogo?: string;
 }
 
 export interface PaymentRequest {

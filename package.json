@@ -4,15 +4,19 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
+    "dev": "tsx server.ts",
+    "build": "vite build && esbuild server.ts --bundle --platform=node --format=cjs --packages=external --sourcemap --outfile=dist/server.cjs",
+    "start": "node dist/server.cjs",
     "preview": "vite preview",
     "lint": "tsc --noEmit"
   },
   "dependencies": {
     "@supabase/supabase-js": "2.48.1",
     "@tailwindcss/vite": "^4.2.4",
+    "@types/express": "^5.0.6",
     "autoprefixer": "^10.5.0",
+    "esbuild": "^0.28.0",
+    "express": "^5.2.1",
     "html-to-image": "^1.11.13",
     "lucide-react": "0.475.0",
     "motion": "^12.38.0",
@@ -21,7 +25,8 @@
     "react-dom": "^19.2.4",
     "react-router-dom": "7.1.0",
     "recharts": "2.15.0",
-    "tailwindcss": "^4.2.4"
+    "tailwindcss": "^4.2.4",
+    "tsx": "^4.22.3"
   },
   "devDependencies": {
     "@types/node": "^22.14.0",
